@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maxi Home Coach · Club Taekwondo Maxima</title>
+<style>
+:root{--red:#d62828;--blue:#1d4ed8;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--soft:#f8fafc;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink);background:#fff;line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+section{padding:64px 0}
+h2{font-size:1.8rem;text-align:center;margin-bottom:8px}
+.sub{text-align:center;color:var(--muted);margin-bottom:36px}
+.bar{height:6px;background:linear-gradient(90deg,var(--red) 50%,var(--blue) 50%)}
+/* HERO */
+.hero{text-align:center;padding:72px 0 56px;background:linear-gradient(180deg,#eef2ff 0%,#fff 100%)}
+.avatar{width:110px;height:110px;margin:0 auto 20px;border-radius:50%;display:grid;place-items:center;font-size:3.4rem;background:#fff;border:4px solid var(--blue);box-shadow:0 0 0 6px #fee2e2,0 10px 30px rgba(29,78,216,.2)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;background:#ecfdf5;color:#047857;font-weight:600;font-size:.9rem;border:1px solid #a7f3d0;animation:glow 2s infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.45)}50%{box-shadow:0 0 0 8px rgba(16,185,129,0)}}
+.hero h1{font-size:clamp(2rem,5vw,3rem);margin:18px 0 6px}
+.hero h1 span{color:var(--red)}
+.club{color:var(--blue);font-weight:600;letter-spacing:.5px}
+.tagline{max-width:640px;margin:14px auto 28px;color:#334155;font-size:1.08rem}
+.btn{display:inline-block;padding:14px 28px;border-radius:12px;background:var(--red);color:#fff;font-weight:700;text-decoration:none;transition:.2s;box-shadow:0 8px 20px rgba(214,40,40,.3)}
+.btn:hover{transform:translateY(-2px);background:#b91c1c}
+.btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--blue);box-shadow:none;margin-left:8px}
+.btn.ghost:hover{background:#eff6ff}
+/* PROBLEM vs SOLUTION */
+.ps{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.col{border-radius:18px;padding:28px;border:1px solid var(--line)}
+.col h3{font-size:1.3rem;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.chaos{background:#fff5f5;border-color:#fecaca}.chaos h3{color:var(--red)}
+.sol{background:#eff6ff;border-color:#bfdbfe}.sol h3{color:var(--blue)}
+.col ul{list-style:none}
+.col li{padding:12px 0 12px 32px;position:relative;border-bottom:1px dashed rgba(0,0,0,.08)}
+.col li:last-child{border:none}
+.chaos li::before{content:"✖";position:absolute;left:4px;color:var(--red);font-weight:700}
+.sol li::before{content:"✔";position:absolute;left:4px;color:var(--blue);font-weight:700}
+/* CAPABILITIES */
+.caps{background:var(--soft)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;transition:.25s;border-top:5px solid var(--blue)}
+.card:nth-child(2){border-top-color:var(--red)}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(15,23,42,.08)}
+.ico{font-size:2rem;margin-bottom:10px}
+.card h4{font-size:1.1rem;margin-bottom:8px}
+.card p{color:#475569;font-size:.95rem}
+.tag{display:inline-block;margin-top:12px;font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:999px;background:#eff6ff;color:var(--blue)}
+.tracks{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+.track{background:#fff;border-radius:18px;padding:22px;border:1px solid var(--line)}
+.track b{color:var(--red)}
+/* SIMULATION */
+.sim{max-width:720px;margin:0 auto;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 20px 40px rgba(15,23,42,.08)}
+.sim-head{background:var(--blue);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.sim-head .dot{width:10px;height:10px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399}
+.chat{height:380px;overflow-y:auto;padding:20px;background:var(--soft);display:flex;flex-direction:column;gap:12px}
+.msg{max-width:82%;padding:12px 16px;border-radius:16px;font-size:.95rem;animation:pop .3s ease}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.user{align-self:flex-end;background:var(--red);color:#fff;border-bottom-right-radius:4px}
+.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.bot a{color:var(--blue);font-weight:600}
+.who{font-size:.72rem;opacity:.75;display:block;margin-bottom:2px;font-weight:600}
+.typing{display:flex;gap:4px;padding:14px 16px}
+.typing span{width:8px;height:8px;border-radius:50%;background:#94a3b8;animation:bounce 1s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.hint{color:var(--muted);text-align:center;margin:auto;font-size:.9rem}
+.btns{display:flex;flex-wrap:wrap;gap:10px;padding:16px;background:#fff;border-top:1px solid var(--line)}
+.btns button{flex:1 1 200px;padding:11px 14px;border-radius:10px;border:2px solid var(--blue);background:#fff;color:var(--blue);font-weight:600;cursor:pointer;transition:.2s;font-size:.88rem}
+.btns button:hover:not(:disabled){background:var(--blue);color:#fff}
+.btns button:disabled{opacity:.45;cursor:not-allowed}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.85rem}
+td{padding:4px 6px;border-bottom:1px solid var(--line)}
+/* FOOTER */
+footer{background:var(--ink);color:#cbd5e1;text-align:center;padding:56px 20px 28px}
+footer h2{color:#fff}
+footer .btn{margin:22px 0 34px;font-size:1.05rem}
+.built{font-size:.85rem;opacity:.7;border-top:1px solid #334155;padding-top:20px}
+@media(max-width:800px){.ps,.grid3,.tracks{grid-template-columns:1fr}.btn.ghost{margin:12px 0 0}section{padding:48px 0}}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+
+<!-- 1. HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="avatar">🥋</div>
+    <div class="badge">🟢 Status: Active &amp; Ready 24/7</div>
+    <h1>Maxi <span>Home</span> Coach</h1>
+    <div class="club">CLUB TAEKWONDO MAXIMA</div>
+    <p class="tagline">Asisten AI yang memberi target latihan rumah mingguan sesuai sabuk, lalu membuktikan progresnya lewat <b>Tantangan Sabtu</b> di dojang.</p>
+    <a class="btn" href="https://forms.gle/jQnFdsRkqLszJCfk7" target="_blank" rel="noopener">Daftarkan Anak ke Program</a>
+    <a class="btn ghost" href="#simulasi">Coba Simulasi ↓</a>
+  </div>
+</header>
+
+<!-- 2. PROBLEM & SOLUTION -->
+<section>
+  <div class="wrap">
+    <h2>Dari Kacau Jadi Terarah</h2>
+    <p class="sub">Masalah nyata di kelas, dan cara Maxi Home Coach menyelesaikannya.</p>
+    <div class="ps">
+      <div class="col chaos">
+        <h3>🌪️ The Chaos</h3>
+        <ul>
+          <li>Video poomsae dan tabel sinoptik sudah ada di website klub, tapi hampir tidak dipelajari karena tidak ada target, pengingat, maupun pengecekan.</li>
+          <li>Kelenturan tidak membaik walau stretching 30 menit di kelas, karena tidak dilatih di rumah. Laporan latihan rumah juga mudah dipalsukan.</li>
+          <li>Ada 8 tingkat sabuk dalam satu kelas, sehingga waktu habis untuk mengulang urutan poomsae dan hasil UKT tidak maksimal.</li>
+        </ul>
+      </div>
+      <div class="col sol">
+        <h3>🎯 The Solution</h3>
+        <ul>
+          <li>Target mingguan spesifik per sabuk (misal: Taegeuk 1 Jang PART 2), lengkap dengan link video dan pengingat otomatis di Google Calendar.</li>
+          <li>Sistem <b>"bintang titipan"</b>: laporan rumah baru dihitung jika anak lulus Tantangan Sabtu yang dicek langsung oleh pelatih.</li>
+          <li>Urutan poomsae dihafal di rumah per PART secara kumulatif, sehingga waktu kelas fokus ke kualitas gerakan dan kesiapan UKT.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. CORE CAPABILITIES -->
+<section class="caps">
+  <div class="wrap">
+    <h2>Kemampuan Inti</h2>
+    <p class="sub">Dibangun 100% dengan tools gratis yang sudah akrab bagi orang tua.</p>
+    <div class="grid3">
+      <div class="card"><div class="ico">📅</div><h4>Target Mingguan Otomatis</h4>
+        <p>Satu acara latihan berulang per sabuk. Setiap Minggu, agen memperbarui deskripsinya dengan target baru + link video &amp; tabel sinoptik dari tkdmaxima.com.</p>
+        <span class="tag">Google Calendar · Google Forms</span></div>
+      <div class="card"><div class="ico">⭐</div><h4>Bintang Titipan &amp; Peringkat</h4>
+        <p>Laporan "selesai latihan" memberi bintang titipan yang cair saat lulus tantangan. Mencatat jarak split (cm), berdiri 1 kaki (detik), dan papan peringkat per sabuk.</p>
+        <span class="tag">Google Sheets</span></div>
+      <div class="card"><div class="ico">🧑‍🏫</div><h4>Pelatih Tetap Memutuskan</h4>
+        <p>Asisten pelatih mencentang Lulus/Belum saat Tantangan Sabtu. Agen menandai laporan yang tidak sesuai hasil, lalu pelatih menentukan tindak lanjut dan kesiapan UKT.</p>
+        <span class="tag">Human-in-the-Loop</span></div>
+    </div>
+    <div class="tracks">
+      <div class="track"><b>⚪🟡 Jalur Gerak Dasar</b><br>Sabuk putih &amp; kuning. Fokus kelenturan, koordinasi, dan keseimbangan.</div>
+      <div class="track"><b>🟡➖ Jalur Poomsae</b><br>Kuning strip ke atas. Kelenturan + poomsae per PART, menjadi syarat wajib UKT.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. INTERACTIVE SIMULATION -->
+<section id="simulasi">
+  <div class="wrap">
+    <h2>Simulasi Percakapan</h2>
+    <p class="sub">Klik salah satu skenario untuk melihat Maxi Home Coach bekerja.</p>
+    <div class="sim">
+      <div class="sim-head"><span class="dot"></span><b>Maxi Home Coach</b><small style="opacity:.8">· online</small></div>
+      <div class="chat" id="chat"><p class="hint" id="hint">👆 Pilih skenario di bawah untuk memulai</p></div>
+      <div class="btns">
+        <button onclick="play(0)">🟡 Target sabuk kuning strip</button>
+        <button onclick="play(1)">⚪ Latihan sabuk putih</button>
+        <button onclick="play(2)">📊 Rekap pelatih</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. FOOTER & CTA -->
+<footer>
+  <h2>Siap Latihan Lebih Terarah di Rumah?</h2>
+  <p>Daftarkan anak Anda dan terima target latihan mingguan langsung di kalender.</p>
+  <a class="btn" href="https://forms.gle/jQnFdsRkqLszJCfk7" target="_blank" rel="noopener">🥋 Daftarkan Anak ke Program</a>
+  <p class="built">Built with AI · AI Builder Bootcamp Showcase<br>© Club Taekwondo Maxima</p>
+</footer>
+
+<script>
+const S=[
+ {who:"Orang Tua",q:"Target minggu ini untuk sabuk kuning strip apa?",
+  a:`Target minggu ini: <b>Taegeuk 1 Jang PART 2 (komando 7–12)</b> 🥋<br>
+  📹 <a href="https://tkdmaxima.com" target="_blank">Video &amp; tabel sinoptik</a><br>
+  Ingat, Tantangan Sabtu bersifat kumulatif: komando <b>1–12</b>. Jadwal latihannya sudah ada di Google Calendar Anda ya 📅`},
+ {who:"Orang Tua",q:"Latihan rumah anak saya (sabuk putih) minggu ini apa?",
+  a:`Latihan 10 menit/hari (Jalur Gerak Dasar) 💪<br>
+  1️⃣ Stretching split depan – 3 menit<br>2️⃣ Butterfly stretch – 2 menit<br>
+  3️⃣ Berdiri 1 kaki kanan &amp; kiri – 3 menit<br>4️⃣ Langkah kuda-kuda maju-mundur – 2 menit<br>
+  🎯 <b>Target Tantangan Sabtu:</b> berdiri 1 kaki 20 detik tanpa goyah. Jangan lupa isi form "selesai latihan" ⭐`},
+ {who:"Pelatih",q:"Rekap minggu ini",
+  a:`📊 <b>Rekap Tantangan Sabtu</b>
+  <table><tr><td>✅ Lulus</td><td>14 siswa (bintang titipan cair)</td></tr>
+  <tr><td>⏳ Belum lulus</td><td>5 siswa (ulang minggu depan)</td></tr>
+  <tr><td>⚠️ Perlu dicek</td><td>2 siswa: lapor selesai 6×, gagal tantangan</td></tr></table>
+  Keputusan tindak lanjut &amp; kesiapan UKT ada di tangan Pelatih 🧑‍🏫`}
+];
+const chat=document.getElementById("chat"),btns=document.querySelectorAll(".btns button");
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+function add(cls,html){const d=document.createElement("div");d.className="msg "+cls;d.innerHTML=html;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d;}
+async function play(i){
+  const h=document.getElementById("hint");if(h)h.remove();
+  btns.forEach(b=>b.disabled=true);
+  const s=S[i];
+  add("user",`<span class="who">${s.who}</span>${s.q}`);
+  await wait(600);
+  const t=add("bot typing","<span></span><span></span><span></span>");
+  await wait(1500);t.remove();
+  add("bot",`<span class="who">Maxi Home Coach</span>${s.a}`);
+  btns.forEach(b=>b.disabled=false);
+}
+</script>
+</body>
+</html>
