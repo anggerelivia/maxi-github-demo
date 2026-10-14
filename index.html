@@ -72,6 +72,30 @@ h2{font-size:1.8rem;text-align:center;margin-bottom:8px}
 .btns button:disabled{opacity:.45;cursor:not-allowed}
 table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.85rem}
 td{padding:4px 6px;border-bottom:1px solid var(--line)}
+/* VIDEO LATIHAN (Week 4) */
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:28px}
+.chip{padding:8px 16px;border-radius:999px;border:2px solid var(--line);background:#fff;font-weight:600;cursor:pointer;font-size:.88rem;color:#334155;transition:.2s}
+.chip.on,.chip:hover{border-color:var(--blue);background:var(--blue);color:#fff}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.vcard{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.25s}
+.vcard:hover{box-shadow:0 14px 30px rgba(15,23,42,.08)}
+.player{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer}
+.player img{width:100%;height:100%;object-fit:cover;display:block;opacity:.9}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.play{position:absolute;inset:0;margin:auto;width:64px;height:44px;border-radius:12px;background:var(--red);display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.35);transition:.2s}
+.play::after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+.player:hover .play{transform:scale(1.08)}
+.dur{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.75);color:#fff;font-size:.75rem;padding:2px 6px;border-radius:6px}
+.vbody{padding:16px 18px 18px}
+.vbody h4{font-size:1rem;line-height:1.4;margin-bottom:6px}
+.vmeta{color:var(--muted);font-size:.82rem}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pill{font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:999px;background:#eff6ff;color:var(--blue)}
+.pill.belt{background:#fef2f2;color:var(--red)}
+.vstate{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 16px;border:2px dashed var(--line);border-radius:18px}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;color:#047857;font-weight:600}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:#10b981}
+.msg .mini{margin-top:10px;border-radius:12px;overflow:hidden}
 /* FOOTER */
 footer{background:var(--ink);color:#cbd5e1;text-align:center;padding:56px 20px 28px}
 footer h2{color:#fff}
@@ -92,7 +116,7 @@ footer .btn{margin:22px 0 34px;font-size:1.05rem}
     <div class="club">CLUB TAEKWONDO MAXIMA</div>
     <p class="tagline">Asisten AI yang memberi target latihan rumah mingguan sesuai sabuk, lalu membuktikan progresnya lewat <b>Tantangan Sabtu</b> di dojang.</p>
     <a class="btn" href="https://forms.gle/jQnFdsRkqLszJCfk7" target="_blank" rel="noopener">Daftarkan Anak ke Program</a>
-    <a class="btn ghost" href="#simulasi">Coba Simulasi ↓</a>
+    <a class="btn ghost" href="#video">Lihat Video Latihan ↓</a>
   </div>
 </header>
 
@@ -145,7 +169,17 @@ footer .btn{margin:22px 0 34px;font-size:1.05rem}
   </div>
 </section>
 
-<!-- 4. INTERACTIVE SIMULATION -->
+<!-- 4. VIDEO LATIHAN (data dinamis dari Supabase) -->
+<section id="video">
+  <div class="wrap">
+    <h2>Video Latihan di Rumah</h2>
+    <p class="sub">Contoh gerakan yang bisa langsung ditonton anak. Setiap video sudah diperiksa pelatih sebelum tampil.<br><span class="live" id="vsumber">Memuat data…</span></p>
+    <div class="chips" id="chips"></div>
+    <div class="vgrid" id="vgrid"><div class="vstate">⏳ Memuat video latihan…</div></div>
+  </div>
+</section>
+
+<!-- 5. INTERACTIVE SIMULATION -->
 <section id="simulasi">
   <div class="wrap">
     <h2>Simulasi Percakapan</h2>
@@ -162,7 +196,7 @@ footer .btn{margin:22px 0 34px;font-size:1.05rem}
   </div>
 </section>
 
-<!-- 5. FOOTER & CTA -->
+<!-- 6. FOOTER & CTA -->
 <footer>
   <h2>Siap Latihan Lebih Terarah di Rumah?</h2>
   <p>Daftarkan anak Anda dan terima target latihan mingguan langsung di kalender.</p>
@@ -170,7 +204,65 @@ footer .btn{margin:22px 0 34px;font-size:1.05rem}
   <p class="built">Built with AI · AI Builder Bootcamp Showcase<br>© Club Taekwondo Maxima</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+/* ============ KONFIGURASI SUPABASE (ganti 2 baris ini) ============
+   Ambil dari Supabase → Project Settings → API Keys / Data API.
+   Pakai PUBLISHABLE key (sb_publishable_...) atau anon key — JANGAN secret key. */
+const SUPABASE_URL = "https://yokgoqqlnkihelnnevmr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_eFw39VHEF6mApLICrUyROA_YsvmOR5U";
+/* ================================================================= */
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const LABEL = {semua:"Semua", poomsae:"🥋 Poomsae", kelenturan:"🤸 Kelenturan", keseimbangan:"🦩 Keseimbangan", dasar:"🦵 Gerak Dasar"};
+let VIDEOS = [], aktif = "semua";
+const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const menit = d => d ? Math.floor(d/60) + ":" + String(d%60).padStart(2,"0") : "";
+
+function playerHTML(v){
+  return `<div class="player" data-id="${esc(v.youtube_id)}" role="button" tabindex="0" aria-label="Putar video ${esc(v.judul)}">
+    <img src="${esc(v.thumbnail)}" alt="" loading="lazy"><span class="play"></span>
+    ${v.durasi_detik ? `<span class="dur">${menit(v.durasi_detik)}</span>` : ""}</div>`;
+}
+/* Iframe baru dimuat saat diklik → halaman tetap ringan walau banyak video */
+document.addEventListener("click", e => {
+  const p = e.target.closest(".player"); if (!p || p.querySelector("iframe")) return;
+  p.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${p.dataset.id}?autoplay=1&rel=0&playsinline=1"
+    title="Video latihan" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen
+    referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+});
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.classList?.contains("player")) e.target.click(); });
+
+function render(){
+  const g = document.getElementById("vgrid");
+  const list = aktif === "semua" ? VIDEOS : VIDEOS.filter(v => v.kategori === aktif);
+  if (!list.length){ g.innerHTML = `<div class="vstate">Belum ada video di kategori ini. Pelatih sedang menyiapkannya 🙏</div>`; return; }
+  g.innerHTML = list.map(v => `<article class="vcard">${playerHTML(v)}
+    <div class="vbody"><h4>${esc(v.judul)}</h4><div class="vmeta">${esc(v.channel || "")}</div>
+    <div class="pills"><span class="pill">${LABEL[v.kategori] || esc(v.kategori)}</span>
+    <span class="pill belt">Sabuk ${esc(v.sabuk)}</span>${v.topik ? `<span class="pill">${esc(v.topik)}</span>` : ""}
+    ${v.part ? `<span class="pill">Part ${v.part} · Komando ${v.komando_awal}–${v.komando_akhir}</span>` : ""}</div></div></article>`).join("");
+}
+function chips(){
+  const ada = ["semua", ...new Set(VIDEOS.map(v => v.kategori))];
+  document.getElementById("chips").innerHTML = ada.map(k =>
+    `<button class="chip ${k===aktif?"on":""}" data-k="${esc(k)}">${LABEL[k] || esc(k)}</button>`).join("");
+  document.querySelectorAll(".chip").forEach(b => b.onclick = () => { aktif = b.dataset.k; chips(); render(); });
+}
+async function muatVideo(){
+  const { data, error } = await db.from("video_latihan")
+    .select("youtube_id,judul,channel,thumbnail,durasi_detik,kategori,sabuk,topik,part,komando_awal,komando_akhir,urutan")
+    .eq("disetujui", true)
+    .order("kategori").order("urutan", { ascending: true, nullsFirst: false }).order("created_at", { ascending: false });
+  const g = document.getElementById("vgrid"), src = document.getElementById("vsumber");
+  if (error){ console.error(error); src.textContent = "Gagal terhubung ke database";
+    g.innerHTML = `<div class="vstate">⚠️ Video belum bisa dimuat. Cek SUPABASE_URL & SUPABASE_KEY.</div>`; return; }
+  VIDEOS = data || [];
+  src.textContent = `${VIDEOS.length} video · data langsung dari Supabase`;
+  chips(); render();
+}
+muatVideo();
+
 const S=[
  {who:"Orang Tua",q:"Target minggu ini untuk sabuk kuning strip apa?",
   a:`Target minggu ini: <b>Taegeuk 1 Jang PART 2 (komando 7–12)</b> 🥋<br>
@@ -199,7 +291,11 @@ async function play(i){
   await wait(600);
   const t=add("bot typing","<span></span><span></span><span></span>");
   await wait(1500);t.remove();
-  add("bot",`<span class="who">Maxi Home Coach</span>${s.a}`);
+  let extra = "";
+  const cari = i===0 ? (VIDEOS.find(v => v.topik==="Taegeuk 1 Jang" && v.part===2) || VIDEOS.find(v => v.kategori==="poomsae"))
+             : i===1 ? VIDEOS.find(v => ["putih","semua"].includes(v.sabuk) && v.kategori!=="poomsae") : null;
+  if (cari) extra = `<div class="mini">${playerHTML(cari)}</div><small>▶️ ${esc(cari.judul)}</small>`;
+  add("bot",`<span class="who">Maxi Home Coach</span>${s.a}${extra}`);
   btns.forEach(b=>b.disabled=false);
 }
 </script>
